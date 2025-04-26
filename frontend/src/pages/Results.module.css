@@ -1,0 +1,50 @@
+/* Results.module.css */
+
+.container {
+    max-width: 700px;
+    min-height: 60vh;
+    margin: 48px auto;
+    background: #1a1a1a;
+    border-radius: 24px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.7);
+    padding: 40px 32px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .header {
+    color: #fafafa;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  
+  .resultsContent {
+    color: #b0b0b0;
+    font-size: 1.15rem;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+  
+  .dashboardButton {
+    background: #232323;
+    color: #fafafa;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 36px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .dashboardButton:hover {
+    background: #444;
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+  }
+  

@@ -1,0 +1,112 @@
+.container {
+    max-width: 900px;
+    min-height: 70vh;
+    margin: 48px auto;
+    background: #181818;
+    border-radius: 28px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+    padding: 40px 32px 32px 32px;
+    position: relative;
+    color: #e0e0e0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .topRight {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+    display: flex;
+    gap: 18px;
+    z-index: 10;
+  }
+  
+  .userButton {
+    background: #232323;
+    color: #e0e0e0;
+    border: 1.5px solid #444;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .userButton:hover {
+    background: #333;
+    color: #fff;
+  }
+  
+  .header {
+    color: #fafafa;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  
+  .sections {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-between;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  
+  .section {
+    flex: 1 1 340px;
+    background: #232323;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    margin-bottom: 24px;
+  }
+  
+  .section h2 {
+    color: #fafafa;
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+    font-weight: 700;
+  }
+  
+  .infoList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .infoList li {
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    font-size: 1.08rem;
+  }
+  
+  .infoMissing {
+    color: #ff6b6b;
+    font-size: 1.08rem;
+    margin-top: 10px;
+  }
+  
+  .resultsCard {
+    background: #20232a;
+    border-radius: 10px;
+    padding: 18px 16px;
+    color: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    font-size: 1.08rem;
+  }
+  
+  .loading {
+    color: #b0b0b0;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 60px;
+  }
+  
+  @media (max-width: 900px) {
+    .sections {
+      flex-direction: column;
+      gap: 24px;
+    }
+  }
+  
