@@ -2,66 +2,69 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from '../firebase';
+import styles from './Welcome.module.css';
 
 function Welcome() {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [userInfoExists, setUserInfoExists] = useState(null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [userInfoExists, setUserInfoExists] = useState(null);
 
-    useEffect(() => {
-        // Listen for authentication state changes
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
-            if (currentUser) {
-                // Query your backend to check if user info exists
-                try {
-                    const res = await fetch(`http://localhost:5000/api/userinfo/${currentUser.uid}`);
-                    setUserInfoExists(res.ok);
-                } catch (err) {
-                    setUserInfoExists(false);
-                }
-            } else {
-                setUserInfoExists(null);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const handleLogout = async () => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
         try {
-            await signOut(auth);
-            setUser(null);
-            setUserInfoExists(null);
-        } catch (error) {
-            alert("Logout failed. Please try again.");
+          const res = await fetch(`http://localhost:3000/api/userinfo/${currentUser.uid}`);
+          setUserInfoExists(res.ok);
+        } catch (err) {
+          setUserInfoExists(false);
         }
-    };
+      } else {
+        setUserInfoExists(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
-    return (
-        <div>
-            {user && user.displayName ? (
-                <>
-                    <h2>Hello, {user.displayName}</h2>
-                    <button onClick={handleLogout}>Logout</button>
-                    {userInfoExists === false && (
-                        <button onClick={() => navigate('/userinfo')}>
-                            Complete Your Info
-                        </button>
-                    )}
-                    {userInfoExists === true && (
-                        <button onClick={() => navigate('/userinfo')}>
-                            Update Your Info
-                        </button>
-                    )}
-                </>
-            ) : (
-                <button onClick={() => navigate('/login')}>Login</button>
-            )}
-            <h1>ReCognize</h1>
-            <button onClick={() => navigate('/MoCATest')}>Take the test!</button>
-            <button onClick={() => navigate('/Dashboard')}>View Dashboard</button>
-        </div>
-    );
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      setUserInfoExists(null);
+    } catch (error) {
+      alert("Logout failed. Please try again.");
+    }
+  };
+
+  const handleUserInfoClick = () => {
+    navigate('/userinfo');
+  };
+
+  return (
+    <div className={styles.container}>
+      {user && user.displayName ? (
+        <>
+          <div className={styles.greeting}>Hello, {user.displayName}</div>
+          <button className={styles.button} onClick={handleLogout}>Logout</button>
+          {userInfoExists !== null && (
+            <button
+              className={`${styles.button} ${styles.secondary}`}
+              onClick={handleUserInfoClick}
+            >
+              {userInfoExists
+                ? "View User Information"
+                : "Complete User Information"}
+            </button>
+          )}
+        </>
+      ) : (
+        <button className={styles.button} onClick={() => navigate('/login')}>Login</button>
+      )}
+      <div className={styles.title}>ReCognize</div>
+      <button className={styles.button} onClick={() => navigate('/MoCATest')}>Take the test!</button>
+      <button className={`${styles.button} ${styles.secondary}`} onClick={() => navigate('/Dashboard')}>View Dashboard</button>
+    </div>
+  );
 }
 
 export default Welcome;

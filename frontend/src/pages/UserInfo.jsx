@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 
+// Change this if your backend runs on a different port
+const API_BASE_URL = 'http://localhost:3000/api';
+
 function UserInfo() {
   const [form, setForm] = useState({
     name: '',
@@ -19,26 +22,24 @@ function UserInfo() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       const user = auth.currentUser;
-      if (user) {
-        try {
-          const res = await fetch(`http://localhost:5000/api/userinfo/${user.uid}`);
-          if (res.ok) {
-            const data = await res.json();
-            setForm({
-              name: data.name || '',
-              gender: data.gender || '',
-              age: data.age ? String(data.age) : '',
-              ethnicity: data.ethnicity || '',
-              location: data.location || ''
-            });
-          } else if (res.status !== 404) {
-            // Only show error if it's not "not found"
-            setError('Failed to fetch your information from the server.');
-          }
-        } catch (err) {
-          setError('Could not connect to the server. Please check your network or contact support.');
-          console.error('Fetch user info error:', err);
+      if (!user) return;
+      try {
+        const res = await fetch(`${API_BASE_URL}/userinfo/${user.uid}`);
+        if (res.ok) {
+          const data = await res.json();
+          setForm({
+            name: data.name || '',
+            gender: data.gender || '',
+            age: data.age ? String(data.age) : '',
+            ethnicity: data.ethnicity || '',
+            location: data.location || ''
+          });
+        } else if (res.status !== 404) {
+          setError('Failed to fetch your information from the server.');
         }
+      } catch (err) {
+        setError('Could not connect to the server. Please check your network or contact support.');
+        console.error('Fetch user info error:', err);
       }
     };
     fetchUserInfo();
@@ -73,7 +74,7 @@ function UserInfo() {
         setLoading(false);
         return;
       }
-      const res = await fetch('http://localhost:5000/api/userinfo', {
+      const res = await fetch(`${API_BASE_URL}/userinfo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -89,12 +90,10 @@ function UserInfo() {
         setSuccess('Your information has been saved.');
         setTimeout(() => navigate('/'), 1200);
       } else {
-        let data;
+        let data = {};
         try {
           data = await res.json();
-        } catch (jsonErr) {
-          data = {};
-        }
+        } catch {}
         setError(data.error || `Failed to save your information. Server responded with status ${res.status}.`);
         console.error('Save user info error:', data.error || res.statusText);
       }
@@ -108,7 +107,7 @@ function UserInfo() {
 
   return (
     <div>
-      <h1>User Info Page</h1>
+      <h1>User Info</h1>
       <form onSubmit={handleSubmit} autoComplete="on">
         <div>
           <label htmlFor="name">Name:</label>
