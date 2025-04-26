@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BackButton from '../components/BackButton';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,17 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/", { replace: true });
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,10 +29,9 @@ function Login() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      setSuccess('Login successful!');
-      // Optionally, redirect the user or update the UI here
+      setSuccess('Login successful.');
+      // The onAuthStateChanged listener will handle the redirect
     } catch (err) {
-      // Provide a more user-friendly error message
       if (err.code === 'auth/user-not-found') {
         setError('No user found with this email address.');
       } else if (err.code === 'auth/wrong-password') {
@@ -70,6 +81,9 @@ function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+      <div style={{ marginTop: '12px' }}>
+        Don't have an account? <Link to="/create-account">Create one</Link>
+      </div>
     </div>
   );
 }
