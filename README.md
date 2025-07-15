@@ -1,6 +1,7 @@
 # ReCognize
-# ReCognize
+
 In this project, we aim to build a system that screens for Alzheimer's disease using audio data. The system will analyze audio recordings of patients' speech and use machine learning techniques to classify them as either having Alzheimer's disease or not. The project is divided into several key components, including data collection, preprocessing, feature extraction, model training, and evaluation.
+
 ## Project Structure
 ```plaintext
 ReCognize/
@@ -13,6 +14,7 @@ ReCognize/
 │   │   ├── context/
 ├── model/
 ├── README.md
+```
 
 We have built a model using machine learning techniques to classify audio recordings of patients' speech as either having Alzheimer's disease or not. The model is trained on a dataset of audio recordings and their corresponding labels. The model is saved in the `model` directory and can be loaded for inference.
 
